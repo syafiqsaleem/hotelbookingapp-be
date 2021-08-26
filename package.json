@@ -1,0 +1,29 @@
+{
+  "name": "hotelbookingapp-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r esm server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syafiqsaleem/hotelbookingapp-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syafiqsaleem/hotelbookingapp-be/issues"
+  },
+  "homepage": "https://github.com/syafiqsaleem/hotelbookingapp-be#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12"
+  }
+}
