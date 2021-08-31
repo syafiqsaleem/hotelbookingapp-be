@@ -2,12 +2,27 @@ import express from "express";
 // import router from "./routes/auth" --> No longer needed due to autoloading routes
 import { readdirSync } from "fs"; // comes with node.js as default (autoloading routes)
 const morgan = require("morgan");
+import cors from "cors"; // FE: Port 3000, BE: Port 8000, different origin which might cause a cors error
+import mongoose from "mongoose";
 require("dotenv").config();
 
 const app = express();
 
+// db connection
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    // useFindAndModify: false,
+    // useUnifiedTopology: true,
+    // useCreateIndex: true,
+  })
+  .then(() => console.log("DB Connected"))
+  .catch((err) => console.log("DB Connection Error: ", err));
+
 // middlewares
+app.use(cors());
 app.use(morgan("dev")); // In development mode(dev) --> helps tell us what kind of request was made(GET/POST/etc)
+
 // route middleware
 // Autoloading routes:
 // readdirSync --> To ensure we are reading all the routes
