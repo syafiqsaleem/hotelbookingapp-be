@@ -22,6 +22,7 @@ mongoose
 // middlewares
 app.use(cors());
 app.use(morgan("dev")); // In development mode(dev) --> helps tell us what kind of request was made(GET/POST/etc)
+app.use(express.json()); // Resolve the problem of undefined when data sent from FE to BE (Can also use body-parser)
 
 // route middleware
 // Autoloading routes:
