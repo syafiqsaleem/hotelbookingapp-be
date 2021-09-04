@@ -3,9 +3,10 @@ import express from "express";
 const router = express.Router();
 
 // comtrollers
-import { register } from "../controllers/auth";
+import { register, login } from "../controllers/auth";
 
 router.post("/register", register);
+router.post("/login", login);
 
 // TypeEror: Router.use() requires a middleware function but got a Object
 // Wrong way of importing and exporting
