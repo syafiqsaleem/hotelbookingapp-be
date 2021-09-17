@@ -34,3 +34,33 @@ export const create = async (req, res) => {
     });
   }
 };
+
+// To retrieve data from DB and post in Home Page
+export const hotels = async (req, res) => {
+  let all = await Hotel.find({})
+    .limit(24)
+    .select("-image.data")
+    .populate("postedBy", "_id name")
+    .exec();
+  // console.log(all);
+  res.json(all);
+};
+
+// To display hotel image
+export const image = async (req, res) => {
+  let hotel = await Hotel.findById(req.params.hotelId).exec();
+  if (hotel && hotel.image && hotel.image.data !== null) {
+    res.set("Content-Type", hotel.image.contentType);
+    return res.send(hotel.image.data);
+  }
+};
+
+// To display all hotels posted by owner
+export const sellerHotels = async (req, res) => {
+  let all = await Hotel.find({ postedBy: req.user._id })
+    .select("-image.data")
+    .populate("postedBy", "_id name")
+    .exec();
+
+  res.send(all);
+};
