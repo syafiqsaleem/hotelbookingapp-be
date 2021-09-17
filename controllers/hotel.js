@@ -14,6 +14,7 @@ export const create = async (req, res) => {
     let files = req.files;
 
     let hotel = new Hotel(fields);
+    hotel.postedBy = req.user._id;
     // handle image (synchronously)
     // the name of image depends on what was written in the FE (NewHotel.js), must be the same here
     if (files.image) {
@@ -61,6 +62,6 @@ export const sellerHotels = async (req, res) => {
     .select("-image.data")
     .populate("postedBy", "_id name")
     .exec();
-
+  console.log(all);
   res.send(all);
 };
