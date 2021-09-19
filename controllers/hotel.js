@@ -73,3 +73,12 @@ export const remove = async (req, res) => {
     .exec();
   res.json(removed);
 };
+
+// display single hotel (show more button)
+export const read = async (req, res) => {
+  let hotel = await Hotel.findById(req.params.hotelId)
+    .select("-image.data")
+    .exec();
+  console.log("SINGLE HOTEL", hotel);
+  res.json(hotel);
+};

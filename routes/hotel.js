@@ -13,6 +13,7 @@ import {
   image,
   sellerHotels,
   remove,
+  read,
 } from "../controllers/hotel";
 
 router.post("/create-hotel", requireSignin, formidable(), create);
@@ -22,5 +23,7 @@ router.get("/hotel/image/:hotelId", image);
 router.get("/seller-hotels", requireSignin, sellerHotels);
 // delete hotel route
 router.delete("/delete-hotel/:hotelId", requireSignin, hotelOwner, remove);
+// single hotel to be displayed (show more button)
+router.get("/hotel/:hotelId", read);
 
 module.exports = router;
