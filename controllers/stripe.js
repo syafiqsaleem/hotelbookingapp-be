@@ -6,6 +6,7 @@
 import User from "../models/user";
 import Stripe from "stripe";
 import queryString from "query-string";
+import hotel from "../models/hotel";
 
 const stripe = Stripe(process.env.STRIPE_SECRET);
 
@@ -102,4 +103,48 @@ export const payoutSetting = async (req, res) => {
   } catch (err) {
     console.log("STRIPE PAYOUT SETTING ERR ", err);
   }
+};
+
+// get sessionId for stripe payment
+export const stripeSessionId = async (req, res) => {
+  // console.log("you hit stripe session id", req.body.hotelId);
+  // 1) get hotel id from req.body
+  const { hotelId } = req.body;
+  // 2) find the hotel based on hotelId from DB
+  const item = await hotel.findById(hotelId).populate("postedBy").exec();
+  // 3) 20% charge as application fee
+  const fee = (item.price * 20) / 100;
+  // 4) create a session
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    // 5) purchasing item details, it will be shown to user on checkout
+    line_items: [
+      {
+        name: item.title,
+        amount: item.price * 100, // in cents
+        currency: "sgd",
+        quantity: 1,
+      },
+    ],
+    // 6) create payment intent with application fee and destination charge 80%
+    payment_intent_data: {
+      // application fee amount is in cents -> 123 = $1.23
+      application_fee_amount: fee * 100,
+      // this seller ca nsee his balance in our FE dashboard
+      transfer_data: {
+        destination: item.postedBy.stripe_account_id,
+      },
+    },
+    // success and canceled urls
+    success_url: process.env.STRIPE_SUCCESS_URL,
+    cancel_url: process.env.STRIPE_CANCEL_URL,
+  });
+
+  // 7) add this session object to user in the DB
+  await User.findByIdAndUpdate(req.user._id, { stripeSession: session }).exec();
+  // 8) send session id as response to FE
+  // console.log("SESSION ======> ", session);
+  res.send({
+    sessionId: session.id,
+  });
 };
