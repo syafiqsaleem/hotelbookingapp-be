@@ -39,6 +39,7 @@ export const create = async (req, res) => {
 
 // To retrieve data from DB and post in Home Page
 export const hotels = async (req, res) => {
+  // let all = await Hotel.find({ from: { $gte: new Date() } })
   let all = await Hotel.find({})
     .limit(24)
     .select("-image.data")
