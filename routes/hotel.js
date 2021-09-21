@@ -15,6 +15,7 @@ import {
   remove,
   read,
   update,
+  userHotelBookings,
 } from "../controllers/hotel";
 
 router.post("/create-hotel", requireSignin, formidable(), create);
@@ -34,5 +35,6 @@ router.put(
   formidable(),
   update
 );
-
+// Get all the hotels booked by user (orders)
+router.get("/user-hotel-bookings", requireSignin, userHotelBookings);
 module.exports = router;
