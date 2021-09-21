@@ -17,6 +17,7 @@ import {
   update,
   userHotelBookings,
   isAlreadyBooked,
+  searchListings,
 } from "../controllers/hotel";
 
 router.post("/create-hotel", requireSignin, formidable(), create);
@@ -40,5 +41,7 @@ router.put(
 router.get("/user-hotel-bookings", requireSignin, userHotelBookings);
 // Hotel is Already booked
 router.get("/is-already-booked/:hotelId", requireSignin, isAlreadyBooked);
+// search results
+router.post("/search-listings", searchListings);
 
 module.exports = router;
